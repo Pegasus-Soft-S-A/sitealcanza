@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'name' => 'Reporte',
+    'widget' => [
+        'order' => [
+            'title' => 'Pedidos',
+        ],
+    ],
+    'count' => [
+        'revenue' => 'INGRESOS',
+        'orders' => 'PEDIDOS',
+        'products' => 'Productos',
+        'customers' => 'Clientes',
+    ],
+    'product_name' => 'Nombre del producto',
+    'quantity' => 'Cantidad',
+    'revenue_statistics' => 'Estadísticas de ingresos',
+    'top_selling_products' => 'Productos más vendidos en este mes',
+    'today' => 'Hoy',
+    'this_week' => 'Esta semana',
+    'this_month' => 'Este mes',
+    'this_year' => 'Este año',
+    'revenue_this_month' => 'Ingresos de este mes',
+    'order_processing_this_month' => 'Pedidos en el mes',
+    'order_completed_this_month' => 'Pedidos completados en este mes',
+    'product_will_be_out_of_stock' => 'Productos que pronto se agotarán',
+    'product_out_of_stock' => 'producto(s) agotado(s)',
+    'customers' => 'Clientes',
+    'date_range_format_value' => 'From :from a :to',
+    'earnings' => 'Ganancias',
+    'items_earning_sales' => 'Artículos que generan ventas :value',
+    'orders' => 'Pedidos',
+    'products' => 'Productos',
+    'ranges' => [
+        'last_7_days' => 'Últimos 7 días',
+        'this_month' => 'Este mes',
+        'this_week' => 'Esta semana',
+        'this_year' => 'Este año',
+        'today' => 'Hoy',
+    ],
+    'recent_orders' => 'Pedidos recientes',
+    'revenue' => 'Ingresos',
+    'sales_reports' => 'Informes de ventas',
+    'select_range' => 'Seleccionar rango',
+    'statistics' => 'Estadísticas',
+    'total_earnings' => 'Ganancia total',
+];

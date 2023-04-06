@@ -11,7 +11,6 @@
 
         {!! Form::open(['route' => ['public.checkout.process', $token], 'class' => 'checkout-form payment-checkout-form', 'id' => 'checkout-form']) !!}
             <input type="hidden" name="checkout-token" id="checkout-token" value="{{ $token }}">
-    <h2>fdglvhjndfkivbjndfklj</h2>
             <div class="container" id="main-checkout-product-info">
                 <div class="row">
                     <div class="order-1 order-md-2 col-lg-5 col-md-6 right">

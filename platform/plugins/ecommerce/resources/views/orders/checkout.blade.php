@@ -224,7 +224,7 @@
                                     </div>
                                     <div class="col-md-6 checkout-button-group">
                                         @if (EcommerceHelper::isValidToProcessCheckout())
-                                            <button type="submit" class="btn payment-checkout-btn payment-checkout-btn-step float-end" data-processing-text="{{ __('Processing. Please wait...') }}" data-error-header="{{ __('Error') }}">
+                                            <button id="revisar" type="submit" class="btn payment-checkout-btn payment-checkout-btn-step float-end" data-processing-text="{{ __('Processing. Please wait...') }}" data-error-header="{{ __('Error') }}">
                                                 {{ __('Checkout') }}
                                             </button>
                                         @else
@@ -271,4 +271,48 @@
 @push('footer')
     <script src="{{ asset('vendor/core/core/base/libraries/intl-tel-input/js/intlTelInput.min.js') }}"></script>
     <script src="{{ asset('vendor/core/core/base/js/phone-number-field.js') }}"></script>
+    <script>
+    var enviar = true;
+
+
+
+function camposvacios() {
+
+    $("#address_name").val("");
+    $("#address_email").val("");
+    $("#address_phone").val("");
+    $("#address_address").val("");
+
+}
+
+function recuperarInformacion() {
+
+    var valor = document.getElementById('identificacion').value.trim();
+    var cad = valor.trim();
+
+    $.ajax({
+        url: 'https://perseo.app/api/datos/datos_consulta',
+        headers: {
+            'Usuario': 'perseo',
+            'Clave': 'Perseo1232*'
+        },
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            identificacion: cad
+        },
+        success: function(data) {
+            data = JSON.parse(data);
+            if (data.identificacion) {
+                $("#address_name").val(data.razon_social);
+                $("#address_email").val(data.correo);
+                $("#address_phone").val(data.telefono2);
+                $("#address_address").val(data.direccion);
+            }
+        }
+    });
+} 
+
+
+    </script>
 @endpush

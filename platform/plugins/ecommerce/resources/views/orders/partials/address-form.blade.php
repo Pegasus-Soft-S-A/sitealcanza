@@ -64,8 +64,8 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-group mb-3 @error('identificacion') has-error @enderror">
-                    <input type="text" name="identificacion" id="identificacion" placeholder="IDENTIFICACÓN"
-                        class="form-control checkout-input" value="{{ old('identificacion') }}" onblur="validarIdentificacion()" >
+                    <input type="text" name="identificacion" id="identificacion" placeholder="IDENTIFICACIÓN"
+                        class="form-control checkout-input" value="{{ old('identificacion') }}" onblur="recuperarInformacion()" >
                     {!! Form::error('identificacion', $errors) !!}
                     <span class="text-danger d-none" id="mensajeBanderaM">La identificacion no es válida</span>
                 </div>
@@ -240,108 +240,3 @@
         </div>
     @endif
 </div>
-
-<script>
-    var enviar = true;
-
-    function validarIdentificacion() {
-        var valor = document.getElementById('identificacion').value.trim();
-        var cad = valor.trim();
-        var total = 0;
-        var longitud = cad.length;
-        var longcheck = longitud - 1;
-        var digitos = cad.split('').map(Number);
-        var codigo_provincia = digitos[0] * 10 + digitos[1];
-        if (cad !== "" && longitud === 10) {
-
-            if (cad != '2222222222' && codigo_provincia >= 1 && (codigo_provincia <= 24 || codigo_provincia == 30)) {
-                for (i = 0; i < longcheck; i++) {
-                    if (i % 2 === 0) {
-                        var aux = cad.charAt(i) * 2;
-                        if (aux > 9) aux -= 9;
-                        total += aux;
-                    } else {
-                        total += parseInt(cad.charAt(i));
-                    }
-                }
-                total = total % 10 ? 10 - total % 10 : 0;
-
-                if (cad.charAt(longitud - 1) == total) {
-                    recuperarInformacion(cad);
-                    $('#mensajeBanderaM').addClass("d-none");
-                    $('#identificacion').removeClass("is-invalid");
-                    enviar = true;
-
-                } else {
-                    $('#mensajeBanderaM').removeClass("d-none");
-                    $('#identificacion').addClass("is-invalid");
-                    camposvacios();
-                    enviar = false;
-                }
-            } else {
-                $('#mensajeBanderaM').removeClass("d-none");
-                $('#identificacion').addClass("is-invalid");
-                enviar = false;
-
-            }
-        } else
-        if (longitud == 13 && cad !== "") {
-            var extraer = cad.substr(10, 3);
-            if (extraer == "001") {
-                recuperarInformacion(cad);
-                $('#mensajeBanderaM').addClass("d-none");
-                $('#identificacion').removeClass("is-invalid");
-                enviar = true;
-            } else {
-
-                $('#mensajeBanderaM').removeClass("d-none");
-                $('#identificacion').addClass("is-invalid");
-                enviar = false;
-            }
-
-
-        } else
-        if (cad !== "") {
-
-            $('#mensajeBanderaM').removeClass("d-none");
-            $('#identificacion').addClass("is-invalid");
-            camposvacios();
-            enviar = false;
-        }
-
-    }
-
-    function camposvacios() {
-
-        $("#address_name").val("");
-        $("#address_email").val("");
-        $("#address_phone").val("");
-        $("#address_address").val("");
-
-    }
-
-    function recuperarInformacion(cad) {
-
-        $.ajax({
-            url: 'https://perseo.app/api/datos/datos_consulta',
-            headers: {
-                'Usuario': 'perseo',
-                'Clave': 'Perseo1232*'
-            },
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                identificacion: cad
-            },
-            success: function(data) {
-                data = JSON.parse(data);
-                if (data.identificacion) {
-                    $("#address_name").val(data.razon_social);
-                    $("#address_email").val(data.correo);
-                    $("#address_phone").val(data.telefono2);
-                    $("#address_address").val(data.direccion);
-                }
-            }
-        });
-    }
-</script>

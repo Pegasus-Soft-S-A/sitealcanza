@@ -3,6 +3,7 @@
 namespace Botble\Ecommerce\Http\Requests;
 
 use Botble\Ecommerce\Enums\ShippingMethodEnum;
+use Botble\Ecommerce\Rules\ValidarIdentificacion;
 use Botble\Payment\Enums\PaymentMethodEnum;
 use Botble\Support\Http\Requests\Request;
 use Cart;
@@ -70,7 +71,8 @@ class CheckoutRequest extends Request
 
         $isCreateAccount = ! auth('customer')->check() && $this->input('create_account') == 1;
         if ($isCreateAccount) {
-            $rules['identificacion'] = 'required|min:10|max:13|unique:ec_customers';
+          
+            $rules['identificacion'] = ['required','min:10','max:13','unique:ec_customers',new ValidarIdentificacion];
             $rules['password'] = 'required|min:6';
             $rules['password_confirmation'] = 'required|same:password';
             $rules['address.email'] = 'required|max:60|min:6|email|unique:ec_customers,email';

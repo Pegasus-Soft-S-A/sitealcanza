@@ -26,6 +26,7 @@ use Botble\Ecommerce\Repositories\Interfaces\ProductInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ShipmentInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ShippingInterface;
 use Botble\Ecommerce\Repositories\Interfaces\TaxInterface;
+use Botble\Ecommerce\Rules\ValidarCorreo;
 use Botble\Ecommerce\Services\Footprints\FootprinterInterface;
 use Botble\Ecommerce\Services\HandleApplyCouponService;
 use Botble\Ecommerce\Services\HandleApplyPromotionsService;
@@ -257,6 +258,9 @@ class PublicCheckoutController
 
     protected function processOrderData(string $token, array $sessionData, Request $request, bool $finished = false): array
     {
+        
+  
+
         if ($request->has('billing_address_same_as_shipping_address')) {
             $sessionData['billing_address_same_as_shipping_address'] = $request->input('billing_address_same_as_shipping_address');
         }
@@ -274,12 +278,14 @@ class PublicCheckoutController
                 $validator = Validator::make($request->input(), [
                     'password' => 'required|min:6',
                     'password_confirmation' => 'required|same:password',
-                    'address.email' => 'required|max:60|min:6|email|unique:ec_customers,email',
+                    'address.email' => ['required','max:60','min:6','email','unique:ec_customers,email', new ValidarCorreo],
                     'address.name' => 'required|min:3|max:120',
                 ]);
 
                 if (! $validator->fails()) {
+                    
                     $customer = $this->customerRepository->createOrUpdate([
+                        'identificacion'=> $request->input('identificacion'),
                         'name' => BaseHelper::clean($request->input('address.name')),
                         'email' => BaseHelper::clean($request->input('address.email')),
                         'phone' => BaseHelper::clean($request->input('address.phone')),

@@ -46,6 +46,7 @@ class Customer extends BaseModel implements
     protected $table = 'ec_customers';
 
     protected $fillable = [
+        'identificacion',
         'name',
         'email',
         'password',

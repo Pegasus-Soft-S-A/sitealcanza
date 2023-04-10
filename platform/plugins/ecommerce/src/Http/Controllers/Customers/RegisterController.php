@@ -17,6 +17,8 @@ use SeoHelper;
 use Theme;
 use URL;
 
+use Botble\Ecommerce\Rules\ValidarCorreo;
+
 class RegisterController extends Controller
 {
     use RegistersUsers;
@@ -49,9 +51,9 @@ class RegisterController extends Controller
         $this->validator($request->input())->validate();
 
         do_action('customer_register_validation', $request);
-
         $customer = $this->create($request->input());
-
+       
+;
         event(new Registered($customer));
 
         if (EcommerceHelper::isEnableEmailVerification()) {
@@ -60,7 +62,8 @@ class RegisterController extends Controller
                     ->setNextUrl(route('customer.login'))
                     ->setMessage(__('We have sent you an email to verify your email. Please check and confirm your email address!'));
         }
-
+       
+        $customer->is_vendor = $request->is_vendor;
         $customer->confirmed_at = Carbon::now();
         $this->customerRepository->createOrUpdate($customer);
         $this->guard()->login($customer);
@@ -71,8 +74,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $rules = [
+            'identificacion' => 'required|min:10|max:13|unique:ec_customers',
+             //'identificacion' => 'max:13',
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:ec_customers',
+            'email' => ['required','email','max:255','unique:ec_customers', new ValidarCorreo],
             'password' => 'required|min:6|confirmed',
         ];
 
@@ -104,10 +109,16 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return $this->customerRepository->create([
+            'identificacion' => BaseHelper::clean($data['identificacion']),
             'name' => BaseHelper::clean($data['name']),
             'email' => BaseHelper::clean($data['email']),
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function recuperar(Request $request){
+
+        
     }
 
     protected function guard()

@@ -44,7 +44,7 @@ use SlugHelper;
 use Throwable;
 use Yajra\DataTables\CollectionDataTable;
 use Yajra\DataTables\EloquentDataTable;
-
+use Botble\Ecommerce\Rules\ValidarCelular;
 class HookServiceProvider extends ServiceProvider
 {
     public function boot()
@@ -108,7 +108,7 @@ class HookServiceProvider extends ServiceProvider
                         $request->input(),
                         [
                             'shop_name' => 'required|min:2',
-                            'shop_phone' => 'required|' . BaseHelper::getPhoneValidationRule(),
+                            'shop_phone' => ['required', new ValidarCelular],
                             'shop_url' => 'required',
                         ],
                         [],

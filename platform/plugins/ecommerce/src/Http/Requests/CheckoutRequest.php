@@ -70,6 +70,7 @@ class CheckoutRequest extends Request
 
         $isCreateAccount = ! auth('customer')->check() && $this->input('create_account') == 1;
         if ($isCreateAccount) {
+            $rules['identificacion'] = 'required|min:10|max:13|unique:ec_customers';
             $rules['password'] = 'required|min:6';
             $rules['password_confirmation'] = 'required|same:password';
             $rules['address.email'] = 'required|max:60|min:6|email|unique:ec_customers,email';

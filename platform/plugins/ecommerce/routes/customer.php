@@ -77,7 +77,8 @@ if (defined('THEME_MODULE_SCREEN_NAME')) {
 
             Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
             Route::post('register', 'RegisterController@register')->name('register.post');
-
+            Route::post('recuperar', 'RegisterController@recuperar')->name('register.informacion');
+            
             Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.request');
             Route::post('password/reset', 'ResetPasswordController@reset')->name('password.reset.post');
             Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');

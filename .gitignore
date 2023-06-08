@@ -24,6 +24,8 @@ __MACOSX
 /.phpintel
 /.php_cs.cache
 
+composer.lock
+
 # public/vendor/core
 
 _ide_helper.php
@@ -47,4 +49,5 @@ resources/docs
 
 storage/framework/laravel-excel/
 /.scribe
+compo
 # /.env.testing

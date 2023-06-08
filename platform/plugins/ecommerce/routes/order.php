@@ -136,6 +136,14 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
 
 Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Fronts', 'middleware' => ['web', 'core']], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
+
+        Route::middleware(['guest'])->group(function () {
+            Route::get('/checkout-pagos-tarjeta/{token}', [
+                'as' => 'button_payment',
+                'uses' => 'PublicCheckoutController@getCheckoutCustom',
+            ]);
+        });
+
         Route::group(['prefix' => 'checkout/{token}', 'as' => 'public.checkout.'], function () {
             Route::get('/', [
                 'as' => 'information',
